@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>circular progress Bar</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: palevioletred;
+        }
+
+        .progress-container{
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .progress-circle{
+            transform: rotate(-90deg); /* Start from the top */
+        }
+
+        .bg{
+            fill: none;
+            stroke:antiquewhite;
+            stroke-width: 10;
+        }
+        .progress{
+            fill: none;
+            stroke: blue;
+            stroke-width: 10;
+            stroke-dasharray: 314;  /* circumference of the circle (2πr) */
+            stroke-dashoffset: 314; /*   Initially hide the progress */
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .progress-value{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-container">
+        <svg class="progress-circle" height="120" width="120" >
+            <circle class="bg" r="50" cx="60" cy="60" ></circle> 
+            <circle class="progress" r="50" cx="60" cy="60" ></circle> 
+          </svg>
+          <div class="progress-value">0%</div>
+    </div>
+    <script>
+        function setProgress(percent){
+            const progressCircle = document.querySelector('.progress');
+            const progressValue = document . querySelector('.progress-value');
+
+            const radius = progressCircle.r.baseVal.value;
+            const circumference = 2 * Math. PI * radius;
+            const offset = circumference - (percent/ 100) * circumference;
+
+            progressCircle.style.strokeDashoffset= offset;
+            progressValue.textContent = `${percent}%`;
+        }
+
+        let progress=0;
+        const interval = setInterval( ( ) =>{
+            if (progress<= 100){
+             setProgress(progress);
+             progress++;
+            }
+            else{
+                clearInterval(interval);
+            }
+        } ,100);
+    </script>
+</body>
+</html>
